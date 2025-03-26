@@ -60,20 +60,7 @@ function getPromiseResult(source) {
  * [Promise.reject(1), Promise.reject(2), Promise.reject(3)]    => Promise rejected
  */
 function getFirstResolvedPromiseResult(promises) {
-  return new Promise((resolve, reject) => {
-    let rejectedCounter = 0;
-    promises.forEach((promise) => {
-      promise.then(
-        (value) => resolve(value),
-        () => {
-          rejectedCounter += 1;
-          if (rejectedCounter === promises.length) {
-            reject(new Error('Promise rejected'));
-          }
-        }
-      );
-    });
-  });
+  return Promise.any(promises);
 }
 
 /**
@@ -95,8 +82,8 @@ function getFirstResolvedPromiseResult(promises) {
  * [promise3, promise6, promise2] => Promise rejected with 2
  * [promise3, promise4, promise6] => Promise rejected with 6
  */
-function getFirstPromiseResult(/* promises */) {
-  throw new Error('Not implemented');
+function getFirstPromiseResult(promises) {
+  return Promise.race(promises);
 }
 
 /**
